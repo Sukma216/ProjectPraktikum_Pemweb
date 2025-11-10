@@ -1,6 +1,6 @@
 <?php
 
-require "../koneksi/koneksi.php";
+require "../../koneksi/koneksi.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     session_start();
@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (password_verify($password, $row['password'])) {
             $_SESSION["username"] = $row['username'];
-            header("Location: ../profile.php");
+            header("Location: ../../code/index.php");
             exit();
         } else {
             echo "<script>

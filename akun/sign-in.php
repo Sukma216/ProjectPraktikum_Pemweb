@@ -3,7 +3,7 @@
 session_start();
 
 if (isset($_SESSION['username'])) {
-    header("Location: ./profile.php");
+    header("Location: ../code/index.php");
     exit();
 }
 
@@ -22,7 +22,7 @@ if (isset($_SESSION['username'])) {
     <div class="container text-center">
         <div class="row align-items-center">
             <div class="col">
-                <img src="../img-beasaku/img-sign.jpg" class="img-in">
+                <img src="../assets/sign-in-up.jpeg" class="img-in">
             </div>
 
             <div class="col">

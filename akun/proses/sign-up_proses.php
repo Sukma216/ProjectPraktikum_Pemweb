@@ -1,6 +1,6 @@
 <?php
 
-require "../koneksi/koneksi.php";
+require "../../koneksi/koneksi.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
@@ -17,11 +17,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // cek apakah email sdh terdaftar?
     $check = $db->prepare("SELECT id FROM users WHERE email = ? OR username = ?");
     $check->bind_param("ss", $email, $username);
     $check->execute();
-    $check->store_result(); //ngembalikan suatu nilai, true atau false
+    $check->store_result(); 
 
     if ($check->num_rows > 0) {
         echo "<script>

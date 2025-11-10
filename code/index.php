@@ -1,10 +1,29 @@
 <?php
-// session_start();
-// // Cek apakah user sudah login
-// if(!isset($_SESSION['username'])){
-//     header("Location: login.php");
-//     exit;
-// }
+
+require '../koneksi/koneksi.php';
+session_start();
+// Cek apakah user sudah login
+if(!isset($_SESSION['username'])){
+    header("Location: ../akun/sign-in.php");
+    exit;
+}
+
+$username_session = $_SESSION['username'];
+$stmt = $db->prepare("SELECT username FROM users WHERE username = ?");
+$stmt->bind_param("s", $username_session);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$user = null;
+if ($result->num_rows === 1) {
+    $user = $result->fetch_assoc();
+} else {
+    // Jika sesi valid tapi data tidak ditemukan, hapus sesi dan redirect ke login
+    session_unset();
+    session_destroy();
+    header("Location: ../akun/sign-in.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -12,12 +31,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Home - <?php echo htmlspecialchars($user['username']); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <style>
         .home-1 {
-            background-image: url("../assets/beasaku-bg.avif");
+            background-image: url("../assets/home/beasaku-bg.avif");
             background-size: cover;       
             background-position: center;  
             background-repeat: no-repeat;
@@ -75,7 +94,11 @@
                     <a class="nav-link " href="panduan.php">Panduan</a>
                     </li>
                     <li class="nav-item active">
-                        <button class="btn btn-profil" type="button" name="username">SukmaAul</button>
+                        <button class="btn btn-profil" type="button" name="username">
+                            <a href="../akun/profile.php">
+                                <?php echo htmlspecialchars($user['username']); ?>
+                            </a>
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -85,7 +108,7 @@
     <section class="home-1 text-center py-5">
         <div class="overlay">  
             <div class="container d-flex flex-column align-items-center justify-content-center">
-                <img class="logo-landing" src="../assets/orange-nobg.png" alt="logo beasaku">
+                <img class="logo-landing" src="../assets/logo/orange-nobg.png" alt="logo beasaku">
                 <button class="btn seemore" type="button" name="seemore">Lihat Beasiswa</button>
             </div>
         </div>
@@ -117,7 +140,7 @@
                         <div class="d-flex justify-content-center gap-3">
                             <div class="card shadow-lg h-100" style="width: 15rem;">
                                 <div class="card-img-top p-4 text-center">
-                                    <img class="cepat-akurat" src="../assets/cepat.jpg" alt="cepat dan akurat">
+                                    <img class="cepat-akurat" src="../assets/home/cepat.jpg" alt="cepat dan akurat">
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title fw-bold" style="color: #ff8c6b;">Filter Cepat dan Akurat</h5>
@@ -128,7 +151,7 @@
                             
                             <div class="card shadow-lg h-100" style="width: 15rem;">
                                 <div class="card-img-top p-4 text-center">
-                                    <img class="cepat-akurat" src="../assets/info.jpg" alt="">
+                                    <img class="cepat-akurat" src="../assets/home/terverifikasi.jpg" alt="">
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title fw-bold" style="color: #ff8c6b;">Info Terverifikasi</h5>

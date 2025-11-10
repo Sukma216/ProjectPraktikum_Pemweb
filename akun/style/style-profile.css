@@ -1,11 +1,11 @@
 body {
-    background: linear-gradient(to bottom, #FFCFB5, white );
-    color: white;
+    background: linear-gradient(to bottom, #FFCFB5, white);
+    color: #333;           
     min-height: 100vh;
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
+    display: block;       
     padding: 20px;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
@@ -15,8 +15,22 @@ body {
     padding: 50px 60px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
 }
 
+.container-fluid img{ width: 150px; height: auto; }
+
+.nav-link {
+    color: #000 !important; /* warna hitam untuk link biasa */
+    font-weight: 500;
+}
+.nav-link.active {
+    color: #ff8c6b !important; /* warna oranye */
+    font-weight: bold;
+    border-bottom: 2px solid #ff8c6b;
+}
+.navbar-nav { 
+    gap: 20px; /* jarak antar menu */ }
 .header-wrapper {
     display: flex;
     justify-content: space-between;

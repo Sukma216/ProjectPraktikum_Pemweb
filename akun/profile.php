@@ -1,6 +1,6 @@
 <?php
 
-require './koneksi/koneksi.php'; 
+require '../koneksi/koneksi.php'; 
 session_start();
 if (!isset($_SESSION['username'])) {
     header("Location: ./sign-in.php");
@@ -31,8 +31,44 @@ $stmt->close();
     <title>Profile - <?php echo htmlspecialchars($user['username']); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./style/style-profile.css"> 
+
 </head>
 <body>
+    <div>
+         <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <img src="../assets/logo/logoputih.png" alt="">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="../code/index.php">Home</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link " href="../code/about.php">About</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link " href="../code/calender.php">Calender Beasiswa</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link " href="../code/panduan.php">Panduan</a>
+                    </li>
+                    <li class="nav-item active">
+                        <button class="btn btn-profil" type="button" name="username">
+                            <a href="../akun/profile.php">
+                                <?php echo htmlspecialchars($user['username']); ?>
+                            </a>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    </div>
+   
+    <br> <br>
     <div class="container">
         <div class="header-wrapper">
             <div>

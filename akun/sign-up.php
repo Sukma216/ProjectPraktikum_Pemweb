@@ -22,7 +22,7 @@ if (isset($_SESSION['username'])) {
     <div class="container text-center">
         <div class="row align-items-center">
             <div class="col">
-                <img src="../img-beasaku/img-sign.jpg" class="img-up">
+                <img src="../assets/sign-in-up.jpeg" class="img-up">
             </div>
 
             <div class="col">
