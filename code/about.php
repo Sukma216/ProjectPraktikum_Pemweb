@@ -35,6 +35,13 @@
             </div>
         </div>
     </nav>
+
+    <section class="about-1">
+        
+    </section>
+    <section class="about-2">
+
+    </section>
     
     <footer class="text-white py-5" style="background-color: #F27141;">
         <div class="container">
