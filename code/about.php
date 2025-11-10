@@ -10,7 +10,7 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <img src="assets/logoputih.png" alt="">
+            <img src="../assets/logo/logoputih.png" alt="">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
@@ -40,7 +40,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <img src="assets/logoorange.jpg" alt="Logo Beasaku" style="width: 200px; height: auto;">
+                    <img src="../assets/logoorange.jpg" alt="Logo Beasaku" style="width: 200px; height: auto;">
                 </div>
 
                 <div class="col-lg-2 col-md-6 mb-4">
