@@ -67,8 +67,7 @@ $stmt->close();
         </div>
     </nav>
     </div>
-   
-    <br> <br>
+
     <div class="container">
         <div class="header-wrapper">
             <div>
