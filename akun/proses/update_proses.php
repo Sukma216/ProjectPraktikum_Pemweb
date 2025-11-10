@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require "../koneksi/koneksi.php"; 
+require ".../koneksi/koneksi.php"; 
 
 if (!isset($_SESSION['username'])) {
     header("Location: ../sign-in.php");
@@ -35,7 +35,7 @@ if (isset($_POST['update_profile'])) {
         if ($result->num_rows === 0) {
             echo "<script>
                 alert('Error: Pengguna tidak ditemukan.');
-                window.location.href = '../index.php';
+                window.location.href = '.../code/index.php';
             </script>";
             exit;
         }
