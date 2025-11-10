@@ -1,0 +1,135 @@
+body {
+    background-color: white;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    padding: 0;
+    width: 100%;
+    max-width: 1000px;
+    overflow: hidden;
+}
+
+.row {
+    margin: 0 ;
+}
+
+.col:first-child {
+    background-color: white;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.img-in {
+    max-width: 100%;
+    height: auto;
+    display:  block;
+}
+
+.img-up {
+    max-width: 120%;
+    height: auto;
+    display:  block;
+}
+
+.col:last-child {
+    padding: 30px 50px;
+    text-align: left;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.title-up {
+    text-align: center;
+    text-shadow: 0 0 2px #333;
+    font-family: fantasy;
+    font-size: 1.8em;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.title-in {
+    text-align: center;
+    text-shadow: 0 0 2px #333;
+    font-family: fantasy;
+    font-size: 1.8em;
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+
+h5 {
+    text-align: center;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.form-label {
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.form-label-up {
+    margin-bottom: 0.1rem;
+    display: block;
+}
+
+.form-input {
+    background-color: gainsboro;
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid gray;
+    border-radius: 20px; 
+    font-size: 1em;
+    margin-top: 5px; 
+    margin-bottom: 15px !important; 
+}
+
+.form-input-up {
+    background-color: gainsboro;
+    width: 100%;
+    padding: 8px 13px;
+    border: 1px solid gray;
+    border-radius: 20px; 
+    font-size: 1em;
+    margin-top: 5px; 
+    margin-bottom: 15px !important; 
+}
+
+.btn-sign {
+    width: 100%;
+    padding: 12px;
+    background-color: #F27141; /* Warna Oranye Khas Beasaku */
+    color: white;
+    border: none;
+    border-radius: 20px;
+    margin-top: 10px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-transform: uppercase;
+}
+
+.btn-sign:hover {
+    background-color: #e04a1f;
+}
+
+p {
+    text-align: center;
+    text-decoration: none;
+    margin-top: 15px;
+}
+
+a {
+    color: #F27141;
+    text-decoration: none;
+    font-weight: bold;
+}
