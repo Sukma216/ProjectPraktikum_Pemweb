@@ -6,6 +6,17 @@
     <title>About</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .about-1{
+            padding: 50px 0;
+            background-color: #F27141;
+        }
+        .about-desc {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -37,8 +48,26 @@
     </nav>
 
     <section class="about-1">
-        
+        <div class="container text-center">
+            <div class="row align-items-start">
+                <div class="col">
+                    <p class="about-desc"><span style="font-weight :bold;">Selamat datang di Beasaku!</span>, platform terdepan yang
+                    didedikasikan sebagai panduan terlengkap untuk menjelajahi
+                    dan meraih peluang beasiswa. Kami hadir untuk mewadahi
+                    setiap pelajar dan mahasiswa Indonesia dalam mempersiapkan
+                    dan memuluskan jalan studi lanjut, baik di dalam maupun di 
+                    luar negeri. Beasaku membantumu menemukan beasiswa yang
+                    kamu butuhkan dan mewujudkan impian pendidikanmu.</p>
+                    <button class="moresee">Daftar Sekarang</button>
+                </div>
+                <div class="col">
+                    <h2>Tentang</h2>
+                    <img src="../assets/logo/orange-nobg.png" alt="">
+                </div>
+            </div>
+        </div>
     </section>
+
     <section class="about-2">
 
     </section>
