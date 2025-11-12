@@ -1,3 +1,9 @@
+<?php 
+    include '../koneksi/koneksi.php';
+    $query = "SELECT * FROM panduan";
+    $hasil = mysqli_query($db, $query); 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +14,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
         .row .title h2{
             margin-top: 20px;
             margin-bottom: 20px;
@@ -35,6 +47,32 @@
             border-top: 2px solid #000;  
             width: 100vw;                  
                         
+        }
+        /* DOKUMEN */
+        .panduan-img {
+            height: 120px;
+            width: 100%;
+            object-fit: cover;
+        }
+        .link_panduan {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.2s ease;
+        }
+        .link_panduan:hover { color: #F27141;}
+        .card {
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .card-body { align-items: center; justify-content: center; }
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.3;
+            text-align: center;
         }
     </style>
 </head>
@@ -75,24 +113,30 @@
                         Dokumen Beasiswa</h2>
                     </div>
                     <div class="button-cari">
-                        <button class="btn d-flex align-items-center gap-2 custom-button">
-                            <i class="bi bi-search"></i>
-                            <span class="button-text">Cari Dokumen</span>
-                        </button>
+                    <!-- <form method="GET" action="panduan.php" class="mb-4 text-center">
+                        <input type="text" name="search" placeholder="Cari dokumen..." class="form-control d-inline-block" style="width: 300px;">
+                    </form> -->
+                                            
                     </div>
                 </center>
                 <hr class="hr-full">
             </div>
 
             <div class="row">
-                <div class="col">
-                1 of 3
-                </div>
-                <div class="col">
-                2 of 3
-                </div>
-                <div class="col">
-                3 of 3
+                <div class="row justify-content-center">
+                    <?php while($row = mysqli_fetch_assoc($hasil)): ?>
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-lg" style="width: 20rem;">
+                            <img src="../<?php echo $row['gambar_path']; ?>" class="card-img-top panduan-img" alt="<?php echo $row['Nama_panduan']; ?>">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="<?php echo $row['link_panduan']; ?>" target="_blank" class="link_panduan">
+                                        <?php echo $row['Nama_panduan']; ?></a>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endwhile; ?>
                 </div>
             </div>
         </div>
@@ -102,7 +146,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <img src="../assets/logoorange.jpg" alt="Logo Beasaku" style="width: 200px; height: auto;">
+                    <img src="../assets/logo/orange-nobg.png" alt="Logo Beasaku" style="width: 200px; height: auto;">
                 </div>
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h5 class="fw-bold mb-3">Follow Us</h5>

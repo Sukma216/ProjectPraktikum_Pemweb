@@ -40,7 +40,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <img src="../assets/logoorange.jpg" alt="Logo Beasaku" style="width: 200px; height: auto;">
+                    <img src="../assets/logo/orange-nobg.png" alt="Logo Beasaku" style="width: 200px; height: auto;">
                 </div>
 
                 <div class="col-lg-2 col-md-6 mb-4">
