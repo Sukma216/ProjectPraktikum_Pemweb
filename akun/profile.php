@@ -44,7 +44,7 @@ $stmt->close();
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="../code/index.php">Home</a>
+                    <a class="nav-link " href="../code/index.php">Home</a>
                     </li>
                     <li class="nav-item">
                     <a class="nav-link " href="../code/about.php">About</a>
@@ -56,7 +56,7 @@ $stmt->close();
                     <a class="nav-link " href="../code/panduan.php">Panduan</a>
                     </li>
                     <li class="nav-item active">
-                        <button class="btn btn-profil" type="button" name="username">
+                        <button class="btn-profil" type="button" name="username">
                             <a href="../akun/profile.php">
                                 <?php echo htmlspecialchars($user['username']); ?>
                             </a>
@@ -113,5 +113,58 @@ $stmt->close();
             </div>
         </form>
     </div>
+
+    <footer class="text-white py-5" style="background-color: #F27141;">
+        <div class="container-footer">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <img src="../assets/logo/logoorange.jpg" alt="Logo Beasaku" style="width: 200px; height: auto;">
+                </div>
+
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5 class="fw-bold mb-3">Follow Us</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="https://instagram.com/beasaku.idn" class="text-white text-decoration-none" style="font-size: 0.9rem;">
+                                <i class="bi bi-instagram me-2"></i> @beasaku.idn
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="https://facebook.com/beasakuidn" class="text-white text-decoration-none" style="font-size: 0.9rem;">
+                                <i class="bi bi-facebook me-2"></i> beasakuidn
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="fw-bold mb-3">Contact Us</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="tel:08123456789" class="text-white text-decoration-none" style="font-size: 0.9rem;">
+                                <i class="bi bi-whatsapp me-2"></i> 0812 3456 789
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="mailto:beasaku.idn@gmail.com" class="text-white text-decoration-none" style="font-size: 0.9rem;">
+                                <i class="bi bi-envelope-fill me-2"></i> beasaku.idn@gmail.com
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="fw-bold mb-3">Help</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none" style="font-size: 0.9rem;">FAQ</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none" style="font-size: 0.9rem;">Review</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row pt-2 border-top border-white border-opacity-25">
+                <div class="col-12 text-center" style="font-size: 0.8rem;">
+                    &copy; 2025 Beasaku. All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
