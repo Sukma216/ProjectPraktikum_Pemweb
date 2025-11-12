@@ -2,7 +2,7 @@
 
 require '../koneksi/koneksi.php';
 session_start();
-// Cek apakah user sudah login
+
 if(!isset($_SESSION['username'])){
     header("Location: ../akun/sign-in.php");
     exit;
@@ -14,15 +14,42 @@ $stmt->bind_param("s", $username_session);
 $stmt->execute();
 $result = $stmt->get_result();
 
-$user = null;
 if ($result->num_rows === 1) {
     $user = $result->fetch_assoc();
 } else {
-    // Jika sesi valid tapi data tidak ditemukan, hapus sesi dan redirect ke login
     session_unset();
     session_destroy();
     header("Location: ../akun/sign-in.php");
     exit;
+}
+
+$reviews = [];
+$sql_reviews = "
+    SELECT
+        u.username AS nama,
+        r.latar_belakang,
+        r.description
+    FROM
+        reviews r
+    JOIN
+        users u ON r.user_id = u.id
+    ORDER BY
+        r.id DESC
+    LIMIT 3
+";
+
+$stmt_reviews = $db->prepare($sql_reviews);
+
+if ($stmt_reviews) {
+    $stmt_reviews->execute();
+    $result_reviews = $stmt_reviews->get_result();
+
+    while ($row = $result_reviews->fetch_assoc()) {
+        $reviews[] = $row;
+    }
+    $stmt_reviews->close();
+} else {
+    echo "Error preparing statement: " . $db->error;
 }
 ?>
 
@@ -51,24 +78,122 @@ if ($result->num_rows === 1) {
             height: auto;
             z-index: 2;
         }
-        .home4-img {
-            max-width: 90%; 
-            display: block; 
-            margin-left: auto;
-            margin-right: auto;
+        .home-2 {
+            background-color: #f7e6db;
         }
-        /* APA ITU BEASAKU */
+        .home-2 .why-beasaku {
+            padding: 15px;
+        }
+        .home-2 .d-flex.justify-content-center.gap-3 {
+            gap: 15px; 
+        }
+        .home-2 .card-benefit {
+            width: 100%; 
+            max-width: 15rem;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        .home-2 .card-benefit .card-img-top {
+            padding: 0 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            background-color: #fff;
+        }
+        @media (max-width: 768px) {
+            .beasiswa-card {
+                padding: 15px 15px 15px 20px;
+            }
+            
+            .beasiswa-title {
+                font-size: 0.95rem;
+            }
+            
+            .beasiswa-desc {
+                font-size: 0.85rem;
+            }
+        }
         .cepat-akurat {
-            width: 80px; 
-            height: auto; 
-            object-fit: contain; 
+            width: 100% !important; 
+            height: 200px !important; 
+            object-fit: cover !important;
+            display: block !important;
+            margin: 0 !important;
+            border-radius: 0 !important;
         }
-
-        .btn-profil a {
-            color: white;
-            text-decoration: none;
-            font-weight: inherit; 
-            text-shadow: inherit;
+        .beasiswa-card {
+            position: relative;
+            background: white;
+            border-radius: 12px;
+            padding: 20px 20px 20px 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        .beasiswa-card:hover {
+            box-shadow: 0 8px 20px rgba(242, 113, 65, 0.15);
+            transform: translateY(-4px);
+        }
+        .beasiswa-border {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, #F27141 0%, #ff9068 100%);
+            transition: width 0.3s ease;
+        }
+        .beasiswa-card:hover .beasiswa-border { width: 8px; }
+        .beasiswa-content {
+            position: relative;
+            z-index: 1;
+        }
+        .beasiswa-title {
+            color: #2c3e50 !important;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            line-height: 1.4;
+            transition: color 0.3s ease;
+        }.beasiswa-card:hover .beasiswa-title { color: #F27141; }
+        .beasiswa-desc {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        .home-6 {
+            background-color: #f8f9fa;
+            padding: 20px 0;
+        }
+        .home-6 .home-6-title {
+            margin-bottom: 40px;
+        }
+        .testimonial-card {
+            background-color: #fff0e7;
+            border: none;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+        .testimonial-card .card-text {
+            font-style: italic;
+            color: #555c62ff;
+            margin-bottom: 25px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        .testimonial-card .card-name {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+        .testimonial-card .card-role {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #50555aff;
         }
     </style>
 </head>
@@ -109,7 +234,7 @@ if ($result->num_rows === 1) {
         <div class="overlay">  
             <div class="container d-flex flex-column align-items-center justify-content-center">
                 <img class="logo-landing" src="../assets/logo/orange-nobg.png" alt="logo beasaku">
-                <button class="btn seemore" type="button" name="seemore">Lihat Beasiswa</button>
+                <button class="btn-seemore" type="button"><a href="calender.php">Lihat Beasiswa</a></button>
             </div>
         </div>
     </section>
@@ -130,7 +255,7 @@ if ($result->num_rows === 1) {
                             lebih mudah, cepat, dan terarah.
                         </p>
                         <p class="fst-italic fw-bold mt-4 mb-4">“Temukan beasiswa, capai asamu.”</p>
-                        <button class="btn seemore"  type="button" name="seemore">Selengkapnya </button>
+                        <button class="btn-seemore"  type="button"><a href="calender.php">Selengkapnya</a></button>
                     </div>
                 </div>
                 
@@ -141,23 +266,27 @@ if ($result->num_rows === 1) {
                             text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);">
                             Kenapa Pilih Beasaku?</h1> 
                         <div class="d-flex justify-content-center gap-3">
-                            <div class="card shadow-lg h-100 card-benefit" style="width: 15rem;">
+                            <div class="card shadow-lg h-100 card-benefit">
                                 <div class="card-img-top p-4 text-center">
                                     <img class="cepat-akurat" src="../assets/home/cepat.jpg" alt="cepat dan akurat">
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title fw-bold" style="color: #F27141;">Filter Cepat dan Akurat</h5>
+                                    <h6 class="card-title-2 fw-bold" 
+                                        style="color: #F27141;
+                                        text-align: left;">Filter Cepat dan Akurat</h6>
                                     <p class="card-text small" style="text-align : justify;">Cari beasiswa berdasarkan jenjang, negara, atau
                                          bidang studi hanya dalam hitungan detik. Hemat waktu berharga Anda!</p>
                                 </div>
                             </div>
                             
-                            <div class="card shadow-lg h-100 card-benefit" style="width: 15rem;">
+                            <div class="card shadow-lg h-100 card-benefit">
                                 <div class="card-img-top p-4 text-center">
                                     <img class="cepat-akurat" src="../assets/home/terverifikasi.jpg" alt="">
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title fw-bold" style="color: #F27141;">Info Terverifikasi</h5>
+                                    <h6 class="card-title-2 fw-bold" 
+                                        style="color: #F27141;
+                                        text-align: left;">Info Terverifikasi</h6>
                                     <p class="card-text small" style="text-align : justify;">Data diperiksa secara berkala langsung dari sumber
                                          resmi penyedia. Kami dapat memastikan informasi valid dan tepat waktu.</p>
                                 </div>
@@ -171,36 +300,59 @@ if ($result->num_rows === 1) {
 
     <section class="home-4">
         <div class="container py-5">
-            <h2 class="home-4-title text-center mb-5 fw-bold" 
-                style="color : #F27141 ; text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);">Beasiswa Terbaru</h2>
-
+            <h1 class="home-4-title text-center mb-5 fw-bold" 
+                style="color : #F27141 ; 
+                text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);">Beasiswa Terbaru</h1>
             <div class="row align-items-center">
                 <div class="col-md-7 mb-4">
-                    <div class="list-group shadow-lg">
-                        <div class="list-group-item list-group-item-action">
-                            <a href="https://dealls.com/sfl" class="text-decoration-none text-dark"><h6 class="mb-1 fw-bold">Beasiswa SejutaCita Future Leaders 2025</h6></a>
-                            <p class="mb-1 text-muted">Untuk jenjang S1 dan S2, termasuk kesempatan edutrip ke Tiongkok.</p>
-                        </div>
-                        <div class="list-group-item list-group-item-action">
-                            <a href="https://beasiswa.kemdikbud.go.id/" class="text-decoration-none text-dark"><h6 class="mb-1 fw-bold">Beasiswa Pendidikan Indonesia (BPI) – Program Doktoral & Dosen</h6></a>
-                            <p class="mb-1 text-muted">Mendukung studi lanjut bagi tenaga pendidik dan dosen di Indonesia agar mampu berkontribusi lebih besar dalam kemajuan ilmu pengetahuan dan pendidikan.</p>
-                        </div>
-                        <div class="list-group-item list-group-item-action">
-                            <a href="https://www.cimbniaga.co.id/id/kejar-mimpi/beasiswa-cimb-niaga" class="text-decoration-none text-dark"><h6 class="mb-1 fw-bold">Beasiswa CIMB Niaga 2025</h6></a>
-                            <p class="mb-1 text-muted">Program bantuan biaya kuliah dengan pendaftaran via website resmi CIMB Niaga.</p>
-                        </div>
-                        <div class="list-group-item list-group-item-action">
-                            <a href="https://www.paragon-innovation.com/scholarship" class="text-decoration-none text-dark"><h6 class="mb-1 fw-bold">Paragon Scholarship Program 2025</h6></a>
-                            <p class="mb-1 text-muted">Beasiswa untuk mahasiswa berprestasi yang memiliki kontribusi sosial tinggi.</p>
-                        </div>
-                        <div class="list-group-item list-group-item-action">
-                            <a href="https://djarumbeasiswaplus.org/tentang_kami/persyaratan-untuk-menjadi-penerima-program-djarum-beasiswa-plus" 
-                                class="text-decoration-none text-dark"><h6 class="mb-1 fw-bold">Beasiswa Djarum Plus 2025</h6></a>
-                            <p class="mb-1 text-muted">Beasiswa bagi mahasiswa berprestasi yang aktif dalam kegiatan sosial, kepemimpinan, dan pengembangan diri.</p>
-                        </div>
+                    <div class="beasiswa-card mb-3">
+                        <div class="beasiswa-border"></div>
+                        <a href="https://dealls.com/sfl" class="text-decoration-none">
+                            <div class="beasiswa-content"> 
+                                <h6 class="beasiswa-title">Beasiswa SejutaCita Future Leaders 2025</h6>
+                                <p class="beasiswa-desc">Untuk jenjang S1 dan S2, termasuk kesempatan edutrip ke Tiongkok.</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="beasiswa-card mb-3">
+                        <div class="beasiswa-border"></div>
+                        <a href="https://beasiswa.kemdikbud.go.id/" class="text-decoration-none">
+                            <div class="beasiswa-content">
+                                <h6 class="beasiswa-title">Beasiswa Pendidikan Indonesia (BPI) – Program Doktoral & Dosen</h6>
+                                <p class="beasiswa-desc">Mendukung studi lanjut bagi tenaga pendidik dan dosen di Indonesia agar mampu berkontribusi lebih besar dalam kemajuan ilmu pengetahuan dan pendidikan.</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="beasiswa-card mb-3">
+                        <div class="beasiswa-border"></div>
+                        <a href="https://www.cimbniaga.co.id/id/kejar-mimpi/beasiswa-cimb-niaga" class="text-decoration-none">
+                            <div class="beasiswa-content">
+                                <h6 class="beasiswa-title">Beasiswa CIMB Niaga 2025</h6>
+                                <p class="beasiswa-desc">Program bantuan biaya kuliah dengan pendaftaran via website resmi CIMB Niaga.</p>
+                            </div>
+                        </a>
+                    </div>    
+                    <div class="beasiswa-card mb-3">
+                        <div class="beasiswa-border"></div>
+                        <a href="https://www.paragon-innovation.com/scholarship" class="text-decoration-none">
+                            <div class="beasiswa-content">    
+                                <h6 class="beasiswa-title">Paragon Scholarship Program 2025</h6>
+                                <p class="beasiswa-desc">Beasiswa untuk mahasiswa berprestasi yang memiliki kontribusi sosial tinggi.</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="beasiswa-card mb-3">
+                        <div class="beasiswa-border"></div>
+                        <a href="https://djarumbeasiswaplus.org/tentang_kami/persyaratan-untuk-menjadi-penerima-program-djarum-beasiswa-plus" class="text-decoration-none">
+                            <div class="beasiswa-content">
+                                <h6 class="beasiswa-title">Beasiswa Djarum Plus 2025</h6>
+                                <p class="beasiswa-desc">Beasiswa bagi mahasiswa berprestasi yang aktif dalam kegiatan sosial, kepemimpinan, dan pengembangan diri.</p>
+                            </div>
+                        </a>
                     </div>
                     <div class="mt-4">
-                        <button class="btn seemore" type="button" name="see-more">Selengkapnya</button>
+                        <button class="btn-seemore" type="button">
+                            <a href="calender.php">Selengkapnya</a></button>
                     </div>
                 </div>
                 <div class="col-md-5 mb-4 text-center">
@@ -215,9 +367,11 @@ if ($result->num_rows === 1) {
             <div class="container">
                 <div class="text-center mb-5">
                     <h1 class="title-tren fw-bold" 
-                    style="color: #F27141;
-                    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);">Trending</h1>
-                    <p class="lead">Beasiswa paling ditunggu :</p>
+                        style="color: #F27141;
+                        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);">Trending</h1>
+                    <h3 class="sub-title" 
+                        style="font-family: monospace;
+                        color: #6c757d">Beasiswa paling ditunggu :</h3>
                 </div>
             </div>
             <div class="carousel-inner">
@@ -236,11 +390,10 @@ if ($result->num_rows === 1) {
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-md-6 mb-4 px-2">
                                 <div class="card h-100 border-0 shadow-sm" style="transform: scale(0.9);">
                                     <div class="card-img-top bg-white p-2 text-center">
-                                        <img src="../assets/LOGO_BEASISWA/dalam/beasiswa-unggulan.png" alt="Banner Beasiswa Unggulan 2025" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <img src="../assets/LOGO_BEASISWA/dalam/Beasiswa-Unggulan1.png" alt="Banner Beasiswa Unggulan 2025" style="width: 100%; height: 200px; object-fit: cover;">
                                     </div>
                                     <div class="card-body">
                                         <h5 class="card-title font-weight-bold">Beasiswa Unggulan 2025</h5>
@@ -297,31 +450,37 @@ if ($result->num_rows === 1) {
     </section>
 
     <section class="home-6">
-        <div class="home-6-title">
-            <h1 class="title-rev fw-bold text-center"
-                style="color: #F27141;
-                text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);">Ratusan Mahasiswa Menggunakan Beasaku</h1>
-            <h3>Mereka berkata : </h3>
+        <div class="container py-4">
+            <div class="home-6-title text-center">
+                <h1 class="title-rev fw-bold" style="color: #F27141;
+                    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);">Ratusan Mahasiswa Menggunakan Beasaku</h1>
+                <h3 class="sub-title" 
+                    style="font-family: monospace;
+                    color: #6c757d;">Mereka berkata : </h3>
+            </div>
 
-        </div>
-        <div>
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
-                    ]</div>
+            <div class="row justify-content-center">
+                <?php if (count($reviews) > 0): ?>
+                    <?php foreach ($reviews as $review): ?>
+                        <div class="col-md-4 mb-4">
+                            <div class="testimonial-card">
+                                <p class="card-text">"<?php echo htmlspecialchars($review['description']); ?>"</p>
+                                <div class="card-footer-custom">
+                                    <div class="card-name"><?php echo htmlspecialchars($review['nama']); ?></div>
+                                    <div class="card-role"><?php echo htmlspecialchars($review['latar_belakang']); ?></div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
-                    ]</div>
-            </div>
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
-                    ]</div>
+            <div class="text-end mt-4">
+                <button class="btn btn-light shadow-sm" 
+                    style="background-color: #e0e0e0;
+                    border-radius: 20px;">
+                    <a href="about.php"
+                        style="color: #495057;
+                        text-decoration: none">Lebih banyak...</a></button>
             </div>
         </div>
     </section>
