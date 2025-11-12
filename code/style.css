@@ -1,7 +1,7 @@
 *{ font-family: 'Poppins', sans-serif; }
-/* Pengaturan logo beasaku di navbar */
+
 .container-fluid img{ width: 150px; height: auto; }
-/* ini buat button default*/
+
 .seemore{
     background-color: #F27141; 
     color: white; 
@@ -10,8 +10,13 @@
     border-radius: 5px; 
     cursor: pointer;
     font-weight: bold;
-    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
 }
+
+.seemore:hover{
+    background-color: #c95e37;
+    color: white;
+}
+
 .moresee{
     background-color: white ; 
     color: #F27141; 
@@ -31,16 +36,16 @@
     border-radius: 8px; 
     cursor: pointer;
     font-weight: bold;
-    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
 }
+
 .nav-link {
-    color: #000 !important; /* warna hitam untuk link biasa */
+    color: #000; /* warna hitam untuk link biasa */
     font-weight: 500;
 }
 .nav-link.active {
-    color: #ff8c6b !important; /* warna oranye */
+    color: #F27141 !important; /* warna oranye */
     font-weight: bold;
-    border-bottom: 2px solid #ff8c6b;
+    border-bottom: 2px solid #F27141;
 }
 .navbar-nav { gap: 20px; /* jarak antar menu */ }
   

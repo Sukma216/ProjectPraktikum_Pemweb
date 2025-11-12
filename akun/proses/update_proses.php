@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require ".../koneksi/koneksi.php"; 
+require "../../koneksi/koneksi.php"; 
 
 if (!isset($_SESSION['username'])) {
     header("Location: ../sign-in.php");

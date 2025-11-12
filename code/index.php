@@ -60,16 +60,16 @@ if ($result->num_rows === 1) {
         /* APA ITU BEASAKU */
         .cepat-akurat {
             width: 80px; 
-            height: 80px; 
-            object-fit: cover; 
+            height: auto; 
+            object-fit: contain; 
         }
 
-        /* Media query untuk tampilan mobile */
-        /* @media (max-width: 768px) {
-            .home4-img {
-                max-width: 100%; 
-            }
-        } */
+        .btn-profil a {
+            color: white;
+            text-decoration: none;
+            font-weight: inherit; 
+            text-shadow: inherit;
+        }
     </style>
 </head>
 <body>
@@ -94,7 +94,7 @@ if ($result->num_rows === 1) {
                     <a class="nav-link " href="panduan.php">Panduan</a>
                     </li>
                     <li class="nav-item active">
-                        <button class="btn btn-profil" type="button" name="username">
+                        <button class="btn-profil" type="button" name="username">
                             <a href="../akun/profile.php">
                                 <?php echo htmlspecialchars($user['username']); ?>
                             </a>
@@ -119,10 +119,10 @@ if ($result->num_rows === 1) {
             <div class="row align-items-center">
                 
                 <div class="col-md-6 mb-4">
-                    <div class="beasaku">
-                        <h1 class="fw-bold" 
-                            style="color: #ff8c6b;
-                            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4); ">
+                    <div class="why-beasaku text-center">
+                        <h1 class="fw-bold mb-4" 
+                            style="color: #F27141;
+                            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2); ">
                             Apa Itu Beasaku?</h1>
                         <p class="lead">
                             Beasaku adalah platform terdepan yang menghubungkan impianmu dengan ribuan peluang beasiswa, 
@@ -136,25 +136,28 @@ if ($result->num_rows === 1) {
                 
                 <div class="col-md-6 mb-4">
                     <div class="why-beasaku text-center">
-                        <h2 class="fw-bold mb-4" style="color: #F27141;">Kenapa Pilih Beasaku?</h2> 
+                        <h1 class="fw-bold mb-4"
+                            style="color: #F27141;
+                            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);">
+                            Kenapa Pilih Beasaku?</h1> 
                         <div class="d-flex justify-content-center gap-3">
-                            <div class="card shadow-lg h-100" style="width: 15rem;">
+                            <div class="card shadow-lg h-100 card-benefit" style="width: 15rem;">
                                 <div class="card-img-top p-4 text-center">
                                     <img class="cepat-akurat" src="../assets/home/cepat.jpg" alt="cepat dan akurat">
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title fw-bold" style="color: #ff8c6b;">Filter Cepat dan Akurat</h5>
+                                    <h5 class="card-title fw-bold" style="color: #F27141;">Filter Cepat dan Akurat</h5>
                                     <p class="card-text small" style="text-align : justify;">Cari beasiswa berdasarkan jenjang, negara, atau
                                          bidang studi hanya dalam hitungan detik. Hemat waktu berharga Anda!</p>
                                 </div>
                             </div>
                             
-                            <div class="card shadow-lg h-100" style="width: 15rem;">
+                            <div class="card shadow-lg h-100 card-benefit" style="width: 15rem;">
                                 <div class="card-img-top p-4 text-center">
                                     <img class="cepat-akurat" src="../assets/home/terverifikasi.jpg" alt="">
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title fw-bold" style="color: #ff8c6b;">Info Terverifikasi</h5>
+                                    <h5 class="card-title fw-bold" style="color: #F27141;">Info Terverifikasi</h5>
                                     <p class="card-text small" style="text-align : justify;">Data diperiksa secara berkala langsung dari sumber
                                          resmi penyedia. Kami dapat memastikan informasi valid dan tepat waktu.</p>
                                 </div>
@@ -211,7 +214,9 @@ if ($result->num_rows === 1) {
         <div id="beasiswaTrending" class="carousel slide" style="background-color: #f7e6db; padding: 50px 0;">
             <div class="container">
                 <div class="text-center mb-5">
-                    <h1 class="display-4 font-weight-bold" style="color: #ff8c6b;">Trending</h1>
+                    <h1 class="title-tren fw-bold" 
+                    style="color: #F27141;
+                    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);">Trending</h1>
                     <p class="lead">Beasiswa paling ditunggu :</p>
                 </div>
             </div>
@@ -293,7 +298,9 @@ if ($result->num_rows === 1) {
 
     <section class="home-6">
         <div class="home-6-title">
-            <h2>Ratusan Mahasiswa Menggunakan Beasaku</h2>
+            <h1 class="title-rev fw-bold text-center"
+                style="color: #F27141;
+                text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);">Ratusan Mahasiswa Menggunakan Beasaku</h1>
             <h3>Mereka berkata : </h3>
 
         </div>
