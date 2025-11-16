@@ -14,6 +14,7 @@ $stmt->bind_param("s", $username_session);
 $stmt->execute();
 $result = $stmt->get_result();
 
+
 if ($result->num_rows === 1) {
     $user = $result->fetch_assoc();
 } else {
@@ -22,6 +23,34 @@ if ($result->num_rows === 1) {
     header("Location: ../akun/sign-in.php");
     exit;
 }
+
+$filter = "dalamnegeri";
+
+if (isset($_GET['location'])) {
+    if ($_GET['location'] == "luarnegeri") {
+        $filter = "luarnegeri";
+    }
+}
+
+if ($filter == "dalamnegeri") {
+    $query = $db->prepare("
+        SELECT * FROM beasiswa 
+        WHERE negara = 'Indonesia'
+        AND jenjang = 'S2'
+    ");
+} else {
+    $query = $db->prepare("
+        SELECT * FROM beasiswa 
+        WHERE negara != 'Indonesia'
+        AND jenjang = 'S2'
+    ");
+}
+
+$location = $filter;
+$query->execute();
+$data = $query->get_result();
+
+
 ?>
 
 <!DOCTYPE html>
@@ -31,7 +60,58 @@ if ($result->num_rows === 1) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
-    <title>Beasiswa S2</title>
+    <title>Beasiswa S1</title>
+    <style>
+        .toggle-switch {
+            position: relative;
+            width: 260px;                
+            background: #f1f1f1;
+            padding: 6px;
+            border-radius: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toggle-switch input[type="radio"] { display: none;}
+
+        .option-label {
+            width: 50%;
+            text-align: center;
+            cursor: pointer;
+            font-size: 14px;
+            color: #666;
+            z-index: 2;
+            padding: 8px 0;
+            user-select: none;
+        }
+
+        .slider {
+            position: absolute;
+            top: 4px;
+            bottom: 4px;
+            width: 50%;
+            left: 4px;
+            background: #ff9551;         
+            border-radius: 40px;
+            transition: 0.3s ease;
+            z-index: 1;
+        }
+
+        #luarnegeri:checked ~ .slider { transform: translateX(100%);}
+        #dalamnegeri:checked + label { color: white; font-weight: 600; }
+
+        #luarnegeri:checked + label + input + label {
+            color: white;
+            font-weight: 600;
+        }
+
+
+        .bea-1.title h1{
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -43,13 +123,13 @@ if ($result->num_rows === 1) {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.php">Home</a>
+                        <a class="nav-link" aria-current="page" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " href="about.php">About</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="calender.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">Calender Beasiswa</a>
+                        <a class="nav-link dropdown-toggle active" href="calender.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">Calender Beasiswa</a>
                         <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="S1.php">Beasiswa S1</a></li>
                                 <li><a class="dropdown-item" href="S2.php">Beasiswa S2</a></li>
@@ -70,6 +150,70 @@ if ($result->num_rows === 1) {
         </div>
     </nav>
 
+    <section class="bea-1">
+        <div class="container text-center">
+            <div class="row align-items-start">
+                <div class="col">
+                    <h1 class="title">Beasiswa S2</h1>
+
+                    <form method="GET" action="S2.php">
+                        <div class="toggle-switch">
+
+                            <input type="radio" id="dalamnegeri" name="location" value="dalamnegeri"
+                                onchange="this.form.submit()" <?= ($location == "dalamnegeri") ? 'checked' : '' ?>>
+                            <label for="dalamnegeri" class="option-label">Dalam negeri</label>
+
+                            <input type="radio" id="luarnegeri" name="location" value="luarnegeri"
+                                onchange="this.form.submit()" <?= ($location == "luarnegeri") ? 'checked' : '' ?>>
+                            <label for="luarnegeri" class="option-label">Luar negeri</label>
+
+                            <div class="slider"></div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col">
+                    One of three columns
+                </div>
+            </div>
+
+            <div class="row mt-4" id="list-beasiswa">
+                <?php while ($row = $data->fetch_assoc()) { ?>
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 p-3">
+                            <?php if (!empty($row['image'])) { ?>
+                                <img src="../<?= htmlspecialchars($row['image']) ?>" 
+                                    class="card-img-top"
+                                    style="height: 150px; object-fit: cover; border-radius: 10px;">
+                            <?php } ?>
+                            <h5><?= htmlspecialchars($row['nama_beasiswa']) ?></h5>
+
+                            <p class="mb-1"><strong>Penyelenggara:</strong> 
+                                <?= htmlspecialchars($row['penyelenggara']) ?>
+                            </p>
+
+                            <p class="mb-1"><strong>Negara:</strong>
+                                <?= htmlspecialchars($row['negara']) ?>
+                            </p>
+
+                            <p class="mb-1"><strong>Deadline:</strong>
+                                <?= htmlspecialchars($row['deadline']) ?>
+                            </p>
+
+                            <p style="height: 70px; overflow: hidden;">
+                                <?= htmlspecialchars(substr($row['deskripsi'], 0, 120)) ?>
+                            </p>
+
+                            <a href="<?= htmlspecialchars($row['link_daftar']) ?>" 
+                                target="_blank" class="btn btn-warning w-100">
+                                Daftar
+                            </a>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
+        </div>
+    </section>
 
 
     <footer class="text-white py-5" style="background-color: #F27141;">

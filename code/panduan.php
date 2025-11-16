@@ -1,8 +1,31 @@
 <?php 
     include '../koneksi/koneksi.php';
     $query = "SELECT * FROM panduan";
-    $hasil = mysqli_query($db, $query); 
-?>
+    $hasil = mysqli_query($db, $query);
+
+    session_start();
+
+    if(!isset($_SESSION['username'])){
+        header("Location: ../akun/sign-in.php");
+        exit;
+    }
+
+    $username_session = $_SESSION['username'];
+    $stmt = $db->prepare("SELECT username FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username_session);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+    } else {
+        session_unset();
+        session_destroy();
+        header("Location: ../akun/sign-in.php");
+        exit;
+    }
+        
+    ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -77,28 +100,36 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <img src="..assets/logo/logoputih.png" alt="">
+            <img src="../assets/logo/logoputih.png" alt="">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="index.php">Home</a>
+                        <a class="nav-link" aria-current="page" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="about.php">About</a>
+                        <a class="nav-link " href="about.php">About</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">Calender Beasiswa</a>
+                        <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="S1.php">Beasiswa S1</a></li>
+                                <li><a class="dropdown-item" href="S2.php">Beasiswa S2</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="calender.php">Calender Beasiswa</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link active" href="panduan.php">Panduan</a>
+                        <a class="nav-link active " href="panduan.php">Panduan</a>
                     </li>
                     <li class="nav-item active">
-                        <button class="btn btn-profil" type="button" name="username">SukmaAul</button>
+                        <button class="btn-profil" type="button" name="username">
+                            <a href="../akun/profile.php">
+                                <?php echo htmlspecialchars($user['username']); ?>
+                            </a>
+                        </button>
                     </li>
                 </ul>
             </div>

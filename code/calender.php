@@ -22,14 +22,22 @@
                     <li class="nav-item">
                     <a class="nav-link " href="about.php">About</a>
                     </li>
-                    <li class="nav-item">
-                    <a class="nav-link active" href="calender.php">Calender Beasiswa</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">Calender Beasiswa</a>
+                        <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="S1.php">Beasiswa S1</a></li>
+                                <li><a class="dropdown-item" href="S2.php">Beasiswa S2</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                     <a class="nav-link " href="panduan.php">Panduan</a>
                     </li>
                     <li class="nav-item active">
-                        <button class="btn btn-profil" type="button" name="username">SukmaAul</button>
+                        <button class="btn-profil" type="button" name="username">
+                            <a href="../akun/profile.php">
+                                <?php echo htmlspecialchars($user['username']); ?>
+                            </a>
+                        </button>
                     </li>
                 </ul>
             </div>

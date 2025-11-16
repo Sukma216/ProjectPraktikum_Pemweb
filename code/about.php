@@ -125,8 +125,12 @@ if ($stmt_reviews) {
                     <li class="nav-item">
                     <a class="nav-link active" href="about.php">About</a>
                     </li>
-                    <li class="nav-item">
-                    <a class="nav-link " href="calender.php">Calender Beasiswa</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">Calender Beasiswa</a>
+                        <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="S1.php">Beasiswa S1</a></li>
+                                <li><a class="dropdown-item" href="S2.php">Beasiswa S2</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                     <a class="nav-link " href="panduan.php">Panduan</a>

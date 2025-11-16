@@ -14,6 +14,7 @@ $stmt->bind_param("s", $username_session);
 $stmt->execute();
 $result = $stmt->get_result();
 
+
 if ($result->num_rows === 1) {
     $user = $result->fetch_assoc();
 } else {
@@ -22,6 +23,34 @@ if ($result->num_rows === 1) {
     header("Location: ../akun/sign-in.php");
     exit;
 }
+
+$location = "dalamnegeri";
+
+if (isset($_GET['location'])) {
+    if ($_GET['location'] == "luarnegeri") {
+        $location = "luarnegeri";
+    }
+}
+
+if ($location == "dalamnegeri") {
+    $query = $db->prepare("
+        SELECT * FROM beasiswa 
+        WHERE negara = 'Indonesia'
+        AND jenjang = 'S1'
+    ");
+} else {
+    $query = $db->prepare("
+        SELECT * FROM beasiswa 
+        WHERE negara != 'Indonesia'
+        AND jenjang = 'S1'
+    ");
+}
+
+
+$query->execute();
+$data = $query->get_result();
+
+
 ?>
 
 <!DOCTYPE html>
@@ -69,10 +98,10 @@ if ($result->num_rows === 1) {
             z-index: 1;
         }
 
-        #international:checked ~ .slider { transform: translateX(100%);}
-        #domestic:checked + label { color: white; font-weight: 600; }
+        #luarnegeri:checked ~ .slider { transform: translateX(100%);}
+        #dalamnegeri:checked + label { color: white; font-weight: 600; }
 
-        #international:checked + label + input + label {
+        #luarnegeri:checked + label + input + label {
             color: white;
             font-weight: 600;
         }
@@ -94,16 +123,16 @@ if ($result->num_rows === 1) {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.php">Home</a>
+                        <a class="nav-link" aria-current="page" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link " href="about.php">About</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="calender.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">Calender Beasiswa</a>
+                        <a class="nav-link dropdown-toggle active" href="calender.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">Calender Beasiswa</a>
                         <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#S1.php">Beasiswa S1</a></li>
-                                <li><a class="dropdown-item" href="#S2.php">Beasiswa S2</a></li>
+                                <li><a class="dropdown-item" href="S1.php">Beasiswa S1</a></li>
+                                <li><a class="dropdown-item" href="S2.php">Beasiswa S2</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -125,23 +154,66 @@ if ($result->num_rows === 1) {
         <div class="container text-center">
             <div class="row align-items-start">
                 <div class="col">
-                <h1 class="title">Beasiswa S1</h1>
-                 <div class="toggle-switch">
-                    <input type="radio" id="domestic" name="location" value="domestic" checked>
-                    <label for="domestic" class="option-label">Dalam negeri</label>
+                    <h1 class="title">Beasiswa S1</h1>
 
-                    <input type="radio" id="international" name="location" value="international">
-                    <label for="international" class="option-label">Luar negeri</label>
+                    <form method="GET">
+                        <div class="toggle-switch">
 
-                    <div class="slider"></div>
+                            <input type="radio" id="dalamnegeri" name="location" value="dalamnegeri"
+                                onchange="this.form.submit()" <?= ($location == "dalamnegeri") ? 'checked' : '' ?>>
+                            <label for="dalamnegeri" class="option-label">Dalam negeri</label>
+
+                            <input type="radio" id="luarnegeri" name="location" value="luarnegeri"
+                                onchange="this.form.submit()" <?= ($location == "luarnegeri") ? 'checked' : '' ?>>
+                            <label for="luarnegeri" class="option-label">Luar negeri</label>
+
+                            <div class="slider"></div>
+                        </div>
+                    </form>
                 </div>
-                </div>
+
                 <div class="col">
-                One of three columns
+                    One of three columns
                 </div>
             </div>
+
+            <div class="row mt-4" id="list-beasiswa">
+                <?php while ($row = $data->fetch_assoc()) { ?>
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 p-3">
+                        <?php if (!empty($row['image'])) { ?>
+                            <img src="../<?= htmlspecialchars($row['image']) ?>" 
+                                class="card-img-top"
+                                style="height: 150px; object-fit: cover; border-radius: 10px;">
+                        <?php } ?>
+
+                            <h5><?= htmlspecialchars($row['nama_beasiswa']) ?></h5>
+
+                            <p class="mb-1"><strong>Penyelenggara:</strong> 
+                                <?= htmlspecialchars($row['penyelenggara']) ?>
+                            </p>
+
+                            <p class="mb-1"><strong>Negara:</strong>
+                                <?= htmlspecialchars($row['negara']) ?>
+                            </p>
+
+                            <p class="mb-1"><strong>Deadline:</strong>
+                                <?= htmlspecialchars($row['deadline']) ?>
+                            </p>
+
+                            <p style="height: 70px; overflow: hidden;">
+                                <?= htmlspecialchars(substr($row['deskripsi'], 0, 120)) ?>
+                            </p>
+
+                            <a href="<?= htmlspecialchars($row['link_daftar']) ?>" 
+                                target="_blank" class="btn btn-warning w-100">
+                                Daftar
+                            </a>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
         </div>
-       
     </section>
 
 
