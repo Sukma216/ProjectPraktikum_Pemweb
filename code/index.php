@@ -207,16 +207,20 @@ if ($stmt_reviews) {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="index.php">Home</a>
+                        <a class="nav-link active" aria-current="page" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link " href="about.php">About</a>
+                        <a class="nav-link " href="about.php">About</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">Calender Beasiswa</a>
+                        <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="S1.php">Beasiswa S1</a></li>
+                                <li><a class="dropdown-item" href="S2.php">Beasiswa S2</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link " href="calender.php">Calender Beasiswa</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link " href="panduan.php">Panduan</a>
+                        <a class="nav-link " href="panduan.php">Panduan</a>
                     </li>
                     <li class="nav-item active">
                         <button class="btn-profil" type="button" name="username">
@@ -393,7 +397,7 @@ if ($stmt_reviews) {
                             <div class="col-md-6 mb-4 px-2">
                                 <div class="card h-100 border-0 shadow-sm" style="transform: scale(0.9);">
                                     <div class="card-img-top bg-white p-2 text-center">
-                                        <img src="../assets/LOGO_BEASISWA/dalam/Beasiswa-Unggulan1.png" alt="Banner Beasiswa Unggulan 2025" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <img src="../assets/LOGO_BEASISWA/dalam/D1-S1.png" alt="Banner Beasiswa Unggulan 2025" style="width: 100%; height: 200px; object-fit: cover;">
                                     </div>
                                     <div class="card-body">
                                         <h5 class="card-title font-weight-bold">Beasiswa Unggulan 2025</h5>
