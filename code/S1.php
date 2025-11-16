@@ -74,7 +74,6 @@ $data = $query->get_result();
         }
 
         .toggle-switch input[type="radio"] { display: none;}
-
         .option-label {
             width: 50%;
             text-align: center;
@@ -105,16 +104,60 @@ $data = $query->get_result();
             color: white;
             font-weight: 600;
         }
-
-
-        .bea-1.title h1{
+        .bea-1 .title h1 {
             margin-top: 20px;
             margin-bottom: 20px;
+            font-weight: bold;
         }
+        .horizontal-card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: left;
+            transition: transform 0.2s;
+            padding: 15px !important; 
+        }
+        .horizontal-card:hover { transform: translateY(-5px);}
+        .card-image-wrapper {
+            height: 100%; 
+            max-height: 300px; 
+            overflow: hidden;
+        }
+        .card-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .card-body-content { padding-left: 20px; }
+        .card h5 {
+            font-weight: bold;
+            color: #333;
+            margin-top: 0;
+        }
+        .card p strong { color: #F27141; }
+        .deskripsi-text {
+            color: #666;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            font-size: 0.95rem;
+            max-height: 70px; 
+            overflow: hidden;
+        }
+        .btn-warning {
+            background-color: #ff9551;
+            border-color: #ff9551;
+            color: white;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 8px;
+        }
+        .btn-warning:hover { background-color: #e06d3d; border-color: #e06d3d; }
+        .bea-1 .container { max-width: 1100px; }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <img src="../assets/logo/logoputih.png" alt="">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -172,46 +215,65 @@ $data = $query->get_result();
                     </form>
                 </div>
 
-                <div class="col">
-                    One of three columns
-                </div>
             </div>
 
-            <div class="row mt-4" id="list-beasiswa">
-                <?php while ($row = $data->fetch_assoc()) { ?>
-                    <div class="col-md-4 mb-3">
-                        <div class="card h-100 p-3">
-                        <?php if (!empty($row['image'])) { ?>
-                            <img src="../<?= htmlspecialchars($row['image']) ?>" 
-                                class="card-img-top"
-                                style="height: 150px; object-fit: cover; border-radius: 10px;">
-                        <?php } ?>
+            <div class="row mt-5" id="list-beasiswa">
+                <?php if ($data->num_rows > 0): ?>
+                    <?php while ($row = $data->fetch_assoc()) { ?>
+                        <div class="col-12 mb-5">
+                            <div class="card horizontal-card">
+                                <div class="row g-0 align-items-center">
+                                    
+                                    <div class="col-md-4 col-lg-3">
+                                        <div class="card-image-wrapper">
+                                            <?php if (!empty($row['image'])) { ?>
+                                                <img src="../<?= htmlspecialchars($row['image']) ?>" 
+                                                    alt="<?= htmlspecialchars($row['nama_beasiswa']) ?>">
+                                            <?php } else { ?>
+                                                <div style="height: 180px; background-color: #f0f0f0; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa;">
+                                                    [Image Placeholder]
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
 
-                            <h5><?= htmlspecialchars($row['nama_beasiswa']) ?></h5>
+                                    <div class="col-md-8 col-lg-9">
+                                        <div class="card-body-content">
+                                            <h5><?= htmlspecialchars($row['nama_beasiswa']) ?></h5>
 
-                            <p class="mb-1"><strong>Penyelenggara:</strong> 
-                                <?= htmlspecialchars($row['penyelenggara']) ?>
-                            </p>
+                                            <p class="mb-1"><strong>Penyelenggara:</strong> 
+                                                <?= htmlspecialchars($row['penyelenggara']) ?>
+                                            </p>
 
-                            <p class="mb-1"><strong>Negara:</strong>
-                                <?= htmlspecialchars($row['negara']) ?>
-                            </p>
+                                            <p class="mb-1"><strong>Negara:</strong>
+                                                <?= htmlspecialchars($row['negara']) ?>
+                                            </p>
 
-                            <p class="mb-1"><strong>Deadline:</strong>
-                                <?= htmlspecialchars($row['deadline']) ?>
-                            </p>
+                                            <p class="mb-1"><strong>Deadline:</strong>
+                                                <?= htmlspecialchars($row['deadline']) ?>
+                                            </p>
 
-                            <p style="height: 70px; overflow: hidden;">
-                                <?= htmlspecialchars(substr($row['deskripsi'], 0, 120)) ?>
-                            </p>
+                                            <p class="deskripsi-text">
+                                                <?= htmlspecialchars(substr($row['deskripsi'], 0, 200)) . (strlen($row['deskripsi']) > 200 ? '...' : '') ?>
+                                            </p>
 
-                            <a href="<?= htmlspecialchars($row['link_daftar']) ?>" 
-                                target="_blank" class="btn btn-warning w-100">
-                                Daftar
-                            </a>
+                                            <a href="<?= htmlspecialchars($row['link_daftar']) ?>" 
+                                                target="_blank" class="btn-seemore">
+                                                Selengkapnya
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
+                    <?php } ?>
+                <?php else: ?>
+                    <div class="col-12 text-center mt-5">
+                        <p class="fs-5 text-muted">Belum ada data beasiswa S1 untuk lokasi ini.</p>
+                        <p>Silakan coba cek Beasiswa S1 Luar Negeri.</p>
                     </div>
-                <?php } ?>
+                <?php endif; ?>
             </div>
         </div>
     </section>

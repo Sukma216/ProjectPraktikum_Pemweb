@@ -238,7 +238,7 @@ if ($stmt_reviews) {
         <div class="overlay">  
             <div class="container d-flex flex-column align-items-center justify-content-center">
                 <img class="logo-landing" src="../assets/logo/orange-nobg.png" alt="logo beasaku">
-                <button class="btn-seemore" type="button"><a href="calender.php">Lihat Beasiswa</a></button>
+                <button class="btn-seemore" type="button"><a href="S1.php">Lihat Beasiswa</a></button>
             </div>
         </div>
     </section>
@@ -259,7 +259,7 @@ if ($stmt_reviews) {
                             lebih mudah, cepat, dan terarah.
                         </p>
                         <p class="fst-italic fw-bold mt-4 mb-4">“Temukan beasiswa, capai asamu.”</p>
-                        <button class="btn-seemore"  type="button"><a href="calender.php">Selengkapnya</a></button>
+                        <button class="btn-seemore"  type="button"><a href="S1.php">Selengkapnya</a></button>
                     </div>
                 </div>
                 
@@ -356,7 +356,7 @@ if ($stmt_reviews) {
                     </div>
                     <div class="mt-4">
                         <button class="btn-seemore" type="button">
-                            <a href="calender.php">Selengkapnya</a></button>
+                            <a href="S1.php">Selengkapnya</a></button>
                     </div>
                 </div>
                 <div class="col-md-5 mb-4 text-center">

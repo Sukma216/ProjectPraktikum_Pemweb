@@ -1,3 +1,27 @@
+<?php
+require '../koneksi/koneksi.php';
+session_start();
+
+if(!isset($_SESSION['username'])){
+    header("Location: ../akun/sign-in.php");
+    exit;
+}
+
+$username_session = $_SESSION['username'];
+$stmt = $db->prepare("SELECT username FROM users WHERE username = ?");
+$stmt->bind_param("s", $username_session);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 1) {
+    $user = $result->fetch_assoc();
+} else {
+    session_unset();
+    session_destroy();
+    header("Location: ../akun/sign-in.php");
+    exit;
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
