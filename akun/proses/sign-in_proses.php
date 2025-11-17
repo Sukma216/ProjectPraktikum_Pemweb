@@ -1,10 +1,8 @@
 <?php
-
-require "../../koneksi/koneksi.php";
+require_once "../../koneksi/koneksi.php";
+session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    session_start();
-
     $email = $_POST['email'];
     $password = $_POST['password'];
 

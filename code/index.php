@@ -1,6 +1,6 @@
 <?php
 
-require '../koneksi/koneksi.php';
+require_once '../koneksi/koneksi.php';
 session_start();
 
 if(!isset($_SESSION['username'])){
@@ -60,6 +60,7 @@ if ($stmt_reviews) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - <?php echo htmlspecialchars($user['username']); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
         .home-1 {
@@ -198,7 +199,7 @@ if ($stmt_reviews) {
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
         <div class="container-fluid">
             <img src="../assets/logo/logoputih.png" alt="">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -397,7 +398,7 @@ if ($stmt_reviews) {
                             <div class="col-md-6 mb-4 px-2">
                                 <div class="card h-100 border-0 shadow-sm" style="transform: scale(0.9);">
                                     <div class="card-img-top bg-white p-2 text-center">
-                                        <img src="../assets/LOGO_BEASISWA/dalam/D1-S1.png" alt="Banner Beasiswa Unggulan 2025" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <img src="../assets/LOGO_BEASISWA/dalam/D1-S1.jpg" alt="Banner Beasiswa Unggulan 2025" style="width: 100%; height: 200px; object-fit: cover;">
                                     </div>
                                     <div class="card-body">
                                         <h5 class="card-title font-weight-bold">Beasiswa Unggulan 2025</h5>
@@ -415,7 +416,7 @@ if ($stmt_reviews) {
                             <div class="col-md-6 mb-4 px-2">
                                 <div class="card h-100 border-0 shadow-sm" style="transform: scale(0.9);">
                                 <div class="card-img-top bg-white p-2 text-center">
-                                        <img src="../assets/LOGO_BEASISWA/luar_negeri/gks.png" alt="Logo LPDP" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <img src="../assets/LOGO_BEASISWA/luar_negeri/gks.jpg" alt="Logo LPDP" style="width: 100%; height: 200px; object-fit: cover;">
                                     </div>
                                     <div class="card-body">
                                         <h5 class="card-title font-weight-bold">Global Korea Scholarship (GKS) 2025</h5>
@@ -482,7 +483,7 @@ if ($stmt_reviews) {
                 <button class="btn btn-light shadow-sm" 
                     style="background-color: #e0e0e0;
                     border-radius: 20px;">
-                    <a href="about.php"
+                    <a href="about.php #about-3"
                         style="color: #495057;
                         text-decoration: none">Lebih banyak...</a></button>
             </div>
@@ -530,7 +531,7 @@ if ($stmt_reviews) {
                     <h5 class="fw-bold mb-3">Help</h5>
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="faq.php" class="text-white text-decoration-none" style="font-size: 0.9rem;">FAQ</a></li>
-                        <li class="mb-2"><a href="#" class="text-white text-decoration-none" style="font-size: 0.9rem;">Review</a></li>
+                        <li class="mb-2"><a href="about.php #about-3" class="text-white text-decoration-none" style="font-size: 0.9rem;">Review</a></li>
                     </ul>
                 </div>
             </div>
@@ -544,4 +545,4 @@ if ($stmt_reviews) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
-</html>
+</html> 
