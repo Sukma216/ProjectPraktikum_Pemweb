@@ -1,6 +1,6 @@
 <?php
 
-require '../koneksi/koneksi.php'; 
+require_once '../koneksi/koneksi.php'; 
 session_start();
 if (!isset($_SESSION['username'])) {
     header("Location: ./sign-in.php");
@@ -30,12 +30,11 @@ $stmt->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile - <?php echo htmlspecialchars($user['username']); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="./style/style-profile.css"> 
-
 </head>
 <body>
-    <div>
-         <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
         <div class="container-fluid">
             <img src="../assets/logo/logoputih.png" alt="">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,8 +48,12 @@ $stmt->close();
                     <li class="nav-item">
                     <a class="nav-link " href="../code/about.php">About</a>
                     </li>
-                    <li class="nav-item">
-                    <a class="nav-link " href="../code/calender.php">Calender Beasiswa</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">Calender Beasiswa</a>
+                        <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="../code/S1.php">Beasiswa S1</a></li>
+                                <li><a class="dropdown-item" href="../code/S2.php">Beasiswa S2</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                     <a class="nav-link " href="../code/panduan.php">Panduan</a>
@@ -66,7 +69,6 @@ $stmt->close();
             </div>
         </div>
     </nav>
-    </div>
 
     <div class="container">
         <div class="header-wrapper">
@@ -120,7 +122,6 @@ $stmt->close();
                 <div class="col-lg-4 col-md-6 mb-4">
                     <img src="../assets/logo/logoorange.jpg" alt="Logo Beasaku" style="width: 200px; height: auto;">
                 </div>
-
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h5 class="fw-bold mb-3">Follow Us</h5>
                     <ul class="list-unstyled">
@@ -154,8 +155,8 @@ $stmt->close();
                 <div class="col-lg-3 col-md-6 mb-4">
                     <h5 class="fw-bold mb-3">Help</h5>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-white text-decoration-none" style="font-size: 0.9rem;">FAQ</a></li>
-                        <li class="mb-2"><a href="#" class="text-white text-decoration-none" style="font-size: 0.9rem;">Review</a></li>
+                        <li class="mb-2"><a href="../code/faq.php" class="text-white text-decoration-none" style="font-size: 0.9rem;">FAQ</a></li>
+                        <li class="mb-2"><a href="../code/about.php #about-3" class="text-white text-decoration-none" style="font-size: 0.9rem;">Review</a></li>
                     </ul>
                 </div>
             </div>
@@ -166,5 +167,7 @@ $stmt->close();
             </div>
         </div>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
 </body>
 </html>

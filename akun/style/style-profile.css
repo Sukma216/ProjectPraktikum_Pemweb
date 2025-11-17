@@ -1,9 +1,7 @@
 body {
     background: linear-gradient(to bottom, #FFCFB5, white);
     color: white;           
-    min-height: 100vh;
-    display: block;       
-    padding: 20px;
+    min-height: 100vh;     
     margin: 0;
     padding: 0;
 }

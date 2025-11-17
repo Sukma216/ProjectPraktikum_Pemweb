@@ -21,7 +21,7 @@ if ($result->num_rows === 1) {
     header("Location: ../akun/sign-in.php");
     exit;
 }
-
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
