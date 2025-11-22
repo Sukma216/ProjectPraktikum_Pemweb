@@ -196,6 +196,16 @@ if ($stmt_reviews) {
             font-weight: 500;
             color: #50555aff;
         }
+        .carousel-control-prev-icon, .carousel-control-next-icon {
+            width: 45px;
+            height: 45px;
+            background-size: 70% 70%;
+            border-radius: 50%;
+            background-color: #F27141 !important;
+        }
+        .carousel-control-prev, .carousel-control-next {
+            width: 8%;
+        }
     </style>
 </head>
 <body>
