@@ -1,20 +1,13 @@
 <?php
-// Ini buat nyambungin ke database, path-nya harus benar ya!
-// Pastikan path ke koneksi/koneksi.php sudah benar dari folder actions/
 require '../../koneksi/koneksi.php';
 
-// Ambil parameter lokasi (domestic/international)
 $location = $_GET['location'] ?? 'domestic'; 
-
-// Terjemahkan lokasi ke format database
 $negara_filter = ($location === 'domestic') ? 'Dalam negeri' : 'Luar negeri';
 
-// Cek kalau ada error di luar itu
 if ($location !== 'domestic' && $location !== 'international') {
     die("<div class=\"alert alert-danger\">Parameter lokasi ($location) gak valid, bro.</div>");
 }
 
-// Query utamanya: JOIN 4 tabel, mengambil SEMUA detail
 $query = "
     SELECT
         b.nama_beasiswa, 
@@ -54,13 +47,11 @@ if ($stmt === false) {
     die("<div class=\"alert alert-danger\">Error SQL: " . $db->error . "</div>");
 }
 
-// Bind parameter dan eksekusi
 $stmt->bind_param("s", $negara_filter);
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
 
-<!-- Output HTML buat di-load ke halaman S2.php -->
 <?php if ($result->num_rows > 0): ?>
     <?php while ($row = $result->fetch_assoc()): ?>
         <div class="card mb-3 shadow-sm border-0 rounded-lg">
@@ -74,10 +65,8 @@ $result = $stmt->get_result();
                 
                 <hr class="my-2">
                 
-                <!-- DETAIL PERSYARATAN (dari tabel detail_persyaratan) -->
                 <?php 
                     $persyaratan = explode(' ||| ', $row['daftar_persyaratan']); 
-                    // Pastikan detail pertama bukan string 'NULL' yang mungkin muncul dari LEFT JOIN
                     if (!empty($persyaratan[0]) && $persyaratan[0] != 'NULL'):
                 ?>
                     <p class="mb-1 mt-2 fw-semibold text-success">Syarat Penting:</p>
@@ -88,7 +77,6 @@ $result = $stmt->get_result();
                     </ul>
                 <?php endif; ?>
 
-                <!-- DETAIL INFO LAIN (dari tabel detail_beasiswa) -->
                 <?php 
                     $details = explode(' ||| ', $row['detail_isi_beasiswa']); 
                     if (!empty($details[0]) && $details[0] != 'NULL'):
@@ -101,7 +89,6 @@ $result = $stmt->get_result();
                     </ul>
                 <?php endif; ?>
 
-                <!-- DETAIL DOKUMEN (dari tabel dokumen) -->
                 <?php 
                     $dokumen = explode(' ||| ', $row['daftar_dokumen']); 
                     if (!empty($dokumen[0]) && $dokumen[0] != 'NULL'):
@@ -114,8 +101,6 @@ $result = $stmt->get_result();
                     </ul>
                 <?php endif; ?>
 
-
-                <!-- Tombol Daftar -->
                 <?php if (!empty($row['link_daftar'])): ?>
                     <a href="<?= htmlspecialchars($row['link_daftar']) ?>" target="_blank" class="btn btn-sm btn-primary mt-3 w-100">Cek & Daftar Sekarang!</a>
                 <?php endif; ?>
