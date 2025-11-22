@@ -87,7 +87,7 @@ if (!$show_detail) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="style.css">
-    <title>Beasiswa S2</title> 
+    <title>Beasiswa S1 - <?php echo htmlspecialchars($user['username']); ?></title> 
     <style>
         .title { margin-top: 30px;}
 
@@ -120,7 +120,7 @@ if (!$show_detail) {
             bottom: 4px;
             width: calc(50% - 4px);
             left: 4px;
-            background: #ff9551;         
+            background: #F27141;         
             border-radius: 40px;
             transition: 0.3s ease;
             z-index: 1;
@@ -129,7 +129,7 @@ if (!$show_detail) {
         #luarnegeri:checked ~ .slider { transform: translateX(126px);}
         #dalamnegeri:checked + label { color: white; font-weight: 600; }
 
-        #luarnegeri:checked + label + input + label {
+        #luarnegeri:checked + label {
             color: white;
             font-weight: 600;
         }
@@ -317,7 +317,7 @@ if (!$show_detail) {
         ?>
             <div class="row align-items-start">
                 <div class="col">
-                    <h1 class="title">Beasiswa S1</h1>
+                    <h1 class="title" style="color : #F27141; font-weight: bold; text-shadow: 0px 1.5px 1px rgba(0, 0, 0, 0.4);">Beasiswa S1</h1>
 
                     <form method="GET" action="S1.php">
                         <div class="toggle-switch">

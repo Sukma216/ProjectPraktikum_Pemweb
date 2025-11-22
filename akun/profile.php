@@ -111,7 +111,7 @@ $stmt->close();
 
             <div class="d-flex justify-content-between mt-4">
                 <button type="submit" class="btn btn-save flex-grow-1 me-2">Save</button>
-                <a href="profile.php" class="btn btn-cancel flex-grow-1 ms-2" role="button">Cancel</a>
+                <a href="../code/index.php" class="btn btn-cancel flex-grow-1 ms-2" role="button">Cancel</a>
             </div>
         </form>
     </div>

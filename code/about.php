@@ -114,6 +114,7 @@ if ($stmt_reviews) {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+            margin-bottom: 10px;
         }
         .btn-edit, .btn-delete {
             background: #FFF3EB;
@@ -302,16 +303,16 @@ if ($stmt_reviews) {
                                         <div class="card-name"><?php echo htmlspecialchars($review['nama']); ?></div>
                                         <div class="card-role"><?php echo htmlspecialchars($review['latar_belakang']); ?></div>
                                     </div>
-                                    <?php if ($review['user_id'] == $user_id) : ?>
-                                        <div class="card-actions">
-                                            <a href="edit-review.php?review_id= <?php echo $review['id']; ?>" class ="btn-edit">Edit</a>
-                                            <form action="proses/proses-delete.php" method="POST" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus ulasan ini?');">
-                                                <input type="hidden" name="review_id" value="<?= $review['id']; ?>">
-                                                <button type="submit" class="btn-delete">Delete</button>
-                                            </form>
-                                        </div>
-                                    <?php endif; ?>
                                 </div>
+                                <?php if ($review['user_id'] == $user_id) : ?>
+                                    <div class="card-actions">
+                                        <a href="edit-review.php?review_id= <?php echo $review['id']; ?>" class ="btn-edit">Edit</a>
+                                        <form action="proses/proses-delete.php" method="POST" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus ulasan ini?');">
+                                            <input type="hidden" name="review_id" value="<?= $review['id']; ?>">
+                                            <button type="submit" class="btn-delete">Delete</button>
+                                        </form>
+                                    </div>
+                                <?php endif; ?>
                             </div> 
                         </div>
                     <?php endforeach; ?>
