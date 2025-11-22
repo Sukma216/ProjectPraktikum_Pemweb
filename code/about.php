@@ -9,13 +9,14 @@ if(!isset($_SESSION['username'])){
 }
 
 $username_session = $_SESSION['username'];
-$stmt = $db->prepare("SELECT username FROM users WHERE username = ?");
+$stmt = $db->prepare("SELECT id, username FROM users WHERE username = ?");
 $stmt->bind_param("s", $username_session);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows === 1) {
     $user = $result->fetch_assoc();
+    $user_id = $user['id'];
 } else {
     session_unset();
     session_destroy();
@@ -26,6 +27,8 @@ if ($result->num_rows === 1) {
 $reviews = [];
 $sql_reviews = "
     SELECT
+        r.id,
+        u.id AS user_id,
         u.username AS nama,
         r.latar_belakang,
         r.description
@@ -36,7 +39,6 @@ $sql_reviews = "
     ORDER BY
         r.id DESC
 ";
-
 $stmt_reviews = $db->prepare($sql_reviews);
 
 if ($stmt_reviews) {
@@ -47,9 +49,8 @@ if ($stmt_reviews) {
         $reviews[] = $row;
     }
     $stmt_reviews->close();
-} else {
-    echo "Error preparing statement: " . $db->error;
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -108,6 +109,78 @@ if ($stmt_reviews) {
             font-size: 0.85rem;
             font-weight: 500;
             color: #50555aff;
+        }
+        .card-footer-custom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .btn-edit, .btn-delete {
+            background: #FFF3EB;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #F27141;
+            text-decoration: none;
+        }
+        .btn-edit:hover {
+            color: white;
+            background: #81a255ff;
+        }
+        .btn-delete:hover {
+            color: white;
+            background: #f44336;
+        }
+        .form-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+        }
+        .form-container h5 {
+            color: #F27141;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+        }
+        .form-group label {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .form-control {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+        }
+        .form-control:focus {
+            border-color: #F27141;
+            box-shadow: 0 0 0 0.2rem rgba(242, 113, 65, 0.25);
+        }
+        .btn-add {
+            background-color: #F27141;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn-add:hover {
+            background-color: #c95e37;
+            color: white;
+            text-decoration: none;
+        }
+        textarea.form-control {
+            min-height: 30px;
+            max-height: 100px; 
+            resize: none;
         }
     </style>
 </head>
@@ -218,20 +291,49 @@ if ($stmt_reviews) {
                 style="color: #F27141;
                 text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2); ">
                 Apa Kata Mereka Tentang Beasaku?</h1>
-            <div class="row justify-content-center">
-                    <?php if (count($reviews) > 0): ?>
-                        <?php foreach ($reviews as $review): ?>
-                            <div class="col-md-4 mb-4">
-                                <div class="testimonial-card">
-                                    <p class="card-text">"<?php echo htmlspecialchars($review['description']); ?>"</p>
-                                    <div class="card-footer-custom">
+            <div class="row justify-content-center mb-5">
+                <?php if (count($reviews) > 0): ?>
+                     <?php foreach ($reviews as $review): ?>
+                        <div class="col-md-4 mb-4">
+                            <div class="testimonial-card">
+                                <p class="card-text">"<?php echo htmlspecialchars($review['description']); ?>"</p>
+                                <div class="card-footer-custom">
+                                    <div class="card-info">
                                         <div class="card-name"><?php echo htmlspecialchars($review['nama']); ?></div>
                                         <div class="card-role"><?php echo htmlspecialchars($review['latar_belakang']); ?></div>
                                     </div>
+                                    <?php if ($review['user_id'] == $user_id) : ?>
+                                        <div class="card-actions">
+                                            <a href="edit-review.php?review_id= <?php echo $review['id']; ?>" class ="btn-edit">Edit</a>
+                                            <form action="proses/proses-delete.php" method="POST" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus ulasan ini?');">
+                                                <input type="hidden" name="review_id" value="<?= $review['id']; ?>">
+                                                <button type="submit" class="btn-delete">Delete</button>
+                                            </form>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                            </div> 
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="form-container">
+                    <h5>Bagikan Pengalaman Anda!</h5>
+                    <form action="proses/proses-add.php" method="POST">
+                        <input type="hidden" name="user_id" value="<?=$user_id;?>">
+
+                        <div class="form-group">
+                            <label>Latar Belakang:</label>
+                            <input type="text" name="latar_belakang" class="form-control" placeholder="Contoh: Penerima Beasiswa Unggulan, Mahasiswa Semester 3" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Ulasan:</label>
+                            <textarea name="description" class="form-control" rows="5" placeholder="Bagikan pengalaman Anda tentang Beasaku..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-add">Kirim</button>
+                    </form>
                 </div>
             </div>
         </div>
