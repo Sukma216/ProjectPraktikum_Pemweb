@@ -1,5 +1,4 @@
 <?php
-
 require '../koneksi/koneksi.php';
 session_start();
 
@@ -14,7 +13,6 @@ $stmt->bind_param("s", $username_session);
 $stmt->execute();
 $result = $stmt->get_result();
 
-
 if ($result->num_rows === 1) {
     $user = $result->fetch_assoc();
 } else {
@@ -23,34 +21,62 @@ if ($result->num_rows === 1) {
     header("Location: ../akun/sign-in.php");
     exit;
 }
+function process_list_data($text) {
+    if (empty($text)) {
+        return [];
+    }
+    $list = array_filter(array_map('trim', explode("\n", $text)));
+    return $list;
+}
 
 $filter = "dalamnegeri";
+$beasiswa_data = null; // Data untuk mode detail
+$show_detail = false; // Flag mode
 
 if (isset($_GET['location'])) {
     if ($_GET['location'] == "luarnegeri") {
         $filter = "luarnegeri";
     }
 }
+$location = $filter; 
+if (isset($_GET['id'])) {
+    $beasiswa_id = (int)$_GET['id'];
+    $show_detail = true;
 
-if ($filter == "dalamnegeri") {
-    $query = $db->prepare("
+    // Query untuk mengambil detail S2
+    $detail_query = $db->prepare("
         SELECT * FROM beasiswa 
-        WHERE negara = 'Indonesia'
-        AND jenjang = 'S2'
+        WHERE id = ? AND jenjang = 'S2' 
     ");
-} else {
-    $query = $db->prepare("
-        SELECT * FROM beasiswa 
-        WHERE negara != 'Indonesia'
-        AND jenjang = 'S2'
-    ");
+    $detail_query->bind_param("i", $beasiswa_id);
+    $detail_query->execute();
+    $detail_result = $detail_query->get_result();
+
+    if ($detail_result->num_rows === 1) {
+        $beasiswa_data = $detail_result->fetch_assoc();
+    } else {
+        $show_detail = false;
+    }
 }
 
-$location = $filter;
-$query->execute();
-$data = $query->get_result();
+if (!$show_detail) {
+    if ($filter == "dalamnegeri") {
+        $query = $db->prepare("
+            SELECT * FROM beasiswa 
+            WHERE negara = 'Indonesia'
+            AND jenjang = 'S2'
+        ");
+    } else {
+        $query = $db->prepare("
+            SELECT * FROM beasiswa 
+            WHERE negara != 'Indonesia'
+            AND jenjang = 'S2'
+        ");
+    }
 
-
+    $query->execute();
+    $data = $query->get_result();
+}
 ?>
 
 <!DOCTYPE html>
@@ -61,11 +87,9 @@ $data = $query->get_result();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="style.css">
-    <title>Beasiswa S1</title>
+    <title>Beasiswa S2</title> 
     <style>
-        .title {
-            margin-top: 30px;
-        }
+        .title { margin-top: 30px;}
 
         .toggle-switch {
             position: relative;
@@ -79,7 +103,6 @@ $data = $query->get_result();
         }
 
         .toggle-switch input[type="radio"] { display: none;}
-
         .option-label {
             width: 50%;
             text-align: center;
@@ -201,6 +224,97 @@ $data = $query->get_result();
 
     <section class="bea-1">
         <div class="container text-center">
+        
+        <?php 
+        if ($show_detail && $beasiswa_data) : 
+            $persyaratan = process_list_data($beasiswa_data['persyaratan'] ?? '');
+            $dokumen = process_list_data($beasiswa_data['dokumen'] ?? '');
+            $seleksi = process_list_data($beasiswa_data['seleksi'] ?? '');
+        ?>
+            <div class="row align-items-start">
+                <div class="col">
+                    <h1 class="title">Detail Beasiswa: <?= htmlspecialchars($beasiswa_data['nama_beasiswa']) ?></h1> <br>
+                    <p class="text-start mb-4">
+                        <a href="S2.php?location=<?= urlencode($location) ?>" class="text-decoration-none btn-seemore">
+                            <i class="bi bi-arrow-left"></i> Kembali ke Daftar Opsi
+                        </a>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="row mt-3 text-start">
+                <div class="col-12">
+                    
+                    <div class="card p-4 mb-4 horizontal-card">
+                        <h4>Informasi Dasar & Deskripsi</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="mb-1"><strong>Penyelenggara:</strong> <?= htmlspecialchars($beasiswa_data['penyelenggara']) ?></p>
+                                <p class="mb-1"><strong>Negara:</strong> <?= htmlspecialchars($beasiswa_data['negara']) ?></p>
+                                <p class="mb-1"><strong>Jenjang:</strong> <?= htmlspecialchars($beasiswa_data['jenjang']) ?></p>
+                                <p class="mb-1"><strong>Deadline:</strong> <?= htmlspecialchars($beasiswa_data['deadline']) ?></p>
+                            </div>
+                            <?php if (!empty($beasiswa_data['image'])) : ?>
+                            <div class="col-md-6 text-center">
+                                <img src="../<?= htmlspecialchars($beasiswa_data['image']) ?>" alt="Gambar Beasiswa" style="max-height: 200px; width: auto; object-fit: contain; border-radius: 8px;">
+                            </div>
+                            <?php endif; ?>
+                        </div>
+                        <hr>
+                        <h5>Deskripsi Beasiswa</h5>
+                        <p style="white-space: pre-wrap;"><?= nl2br(htmlspecialchars($beasiswa_data['deskripsi'])) ?></p>
+                    </div>
+
+                    <div class="card p-4 mb-4 horizontal-card">
+                        <h4>Persyaratan Umum</h4>
+                        <?php if (!empty($persyaratan)): ?>
+                            <ul>
+                                <?php foreach ($persyaratan as $syarat_item) : ?>
+                                    <li><?= htmlspecialchars($syarat_item) ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php else: ?>
+                            <p class="text-muted">Data persyaratan belum tersedia.</p>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <div class="card p-4 mb-4 horizontal-card">
+                        <h4>Dokumen yang Dibutuhkan</h4>
+                        <?php if (!empty($dokumen)): ?>
+                            <ul>
+                                <?php foreach ($dokumen as $dokumen_item) : ?>
+                                    <li><?= htmlspecialchars($dokumen_item) ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php else: ?>
+                            <p class="text-muted">Data dokumen belum tersedia.</p>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="card p-4 mb-4 horizontal-card">
+                        <h4>Tahapan Seleksi</h4>
+                        <?php if (!empty($seleksi)): ?>
+                            <ol>
+                                <?php foreach ($seleksi as $seleksi_item) : ?>
+                                    <li><?= htmlspecialchars($seleksi_item) ?></li> 
+                                <?php endforeach; ?>
+                            </ol>
+                        <?php else: ?>
+                            <p class="text-muted">Data tahapan seleksi belum tersedia.</p>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="text-center mb-5">
+                        <a href="<?= htmlspecialchars($beasiswa_data['link_daftar']) ?>" target="_blank" class="btn btn-seemore">
+                            DAFTAR SEKARANG <i class="bi bi-box-arrow-up-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        <?php 
+        else : 
+        ?>
             <div class="row align-items-start">
                 <div class="col">
                     <h1 class="title">Beasiswa S2</h1>
@@ -263,10 +377,11 @@ $data = $query->get_result();
                                                 <?= htmlspecialchars(substr($row['deskripsi'], 0, 200)) . (strlen($row['deskripsi']) > 200 ? '...' : '') ?>
                                             </p>
 
-                                            <a href="<?= htmlspecialchars($row['link_daftar']) ?>" 
-                                                target="_blank" class="btn-seemore">
+                                            <a href="S2.php?id=<?= htmlspecialchars($row['id']) ?>&location=<?= urlencode($location) ?>" 
+                                                class="text-decoration-none btn-seemore">
                                                 Selengkapnya
                                             </a>
+                                            
                                         </div>
                                     </div>
 
@@ -276,66 +391,17 @@ $data = $query->get_result();
                     <?php } ?>
                 <?php else: ?>
                     <div class="col-12 text-center mt-5">
-                        <p class="fs-5 text-muted">Belum ada data beasiswa S1 untuk lokasi ini.</p>
-                        <p>Silakan coba cek Beasiswa S1 Luar Negeri.</p>
+                        <p class="fs-5 text-muted">Belum ada data beasiswa S2 untuk lokasi ini.</p>
+                        <p>Silakan coba cek Beasiswa S2 Luar Negeri.</p>
                     </div>
                 <?php endif; ?>
             </div>
-        </div>
+        <?php endif; ?> </div>
     </section>
-
 
     <footer class="text-white py-5" style="background-color: #F27141;">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <img src="../assets/logo/logoorange.jpg" alt="Logo Beasaku" style="width: 200px; height: auto;">
-                </div>
-
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h5 class="fw-bold mb-3">Follow Us</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2">
-                            <a href="https://instagram.com/beasaku.idn" class="text-white text-decoration-none" style="font-size: 0.9rem;">
-                                <i class="bi bi-instagram me-2"></i> @beasaku.idn
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="https://facebook.com/beasakuidn" class="text-white text-decoration-none" style="font-size: 0.9rem;">
-                                <i class="bi bi-facebook me-2"></i> beasakuidn
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h5 class="fw-bold mb-3">Contact Us</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2">
-                            <a href="tel:08123456789" class="text-white text-decoration-none" style="font-size: 0.9rem;">
-                                <i class="bi bi-whatsapp me-2"></i> 0812 3456 789
-                            </a>
-                        </li>
-                        <li class="mb-2">
-                            <a href="mailto:beasaku.idn@gmail.com" class="text-white text-decoration-none" style="font-size: 0.9rem;">
-                                <i class="bi bi-envelope-fill me-2"></i> beasaku.idn@gmail.com
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h5 class="fw-bold mb-3">Help</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="faq.php" class="text-white text-decoration-none" style="font-size: 0.9rem;">FAQ</a></li>
-                        <li class="mb-2"><a href="about.php #about-3" class="text-white text-decoration-none" style="font-size: 0.9rem;">Review</a></li>
-                    </ul>
-                </div>
             </div>
-            <div class="row pt-2 border-top border-white border-opacity-25">
-                <div class="col-12 text-center" style="font-size: 0.8rem;">
-                    &copy; 2025 Beasaku. All Rights Reserved.
-                </div>
-            </div>
-        </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
