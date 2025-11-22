@@ -317,9 +317,9 @@ if (!$show_detail) {
         ?>
             <div class="row align-items-start">
                 <div class="col">
-                    <h1 class="title">Beasiswa S2</h1>
+                    <h1 class="title">Beasiswa S1</h1>
 
-                    <form method="GET" action="S2.php">
+                    <form method="GET" action="S1.php">
                         <div class="toggle-switch">
 
                             <input type="radio" id="dalamnegeri" name="location" value="dalamnegeri"
@@ -401,7 +401,55 @@ if (!$show_detail) {
 
     <footer class="text-white py-5" style="background-color: #F27141;">
         <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <img src="../assets/logo/logoorange.jpg" alt="Logo Beasaku" style="width: 200px; height: auto;">
+                </div>
+
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5 class="fw-bold mb-3">Follow Us</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="https://instagram.com/beasaku.idn" class="text-white text-decoration-none" style="font-size: 0.9rem;">
+                                <i class="bi bi-instagram me-2"></i> @beasaku.idn
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="https://facebook.com/beasakuidn" class="text-white text-decoration-none" style="font-size: 0.9rem;">
+                                <i class="bi bi-facebook me-2"></i> beasakuidn
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="fw-bold mb-3">Contact Us</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="tel:08123456789" class="text-white text-decoration-none" style="font-size: 0.9rem;">
+                                <i class="bi bi-whatsapp me-2"></i> 0812 3456 789
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="mailto:beasaku.idn@gmail.com" class="text-white text-decoration-none" style="font-size: 0.9rem;">
+                                <i class="bi bi-envelope-fill me-2"></i> beasaku.idn@gmail.com
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="fw-bold mb-3">Help</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="faq.php" class="text-white text-decoration-none" style="font-size: 0.9rem;">FAQ</a></li>
+                        <li class="mb-2"><a href="about.php #about-3" class="text-white text-decoration-none" style="font-size: 0.9rem;">Review</a></li>
+                    </ul>
+                </div>
             </div>
+            <div class="row pt-2 border-top border-white border-opacity-25">
+                <div class="col-12 text-center" style="font-size: 0.8rem;">
+                    &copy; 2025 Beasaku. All Rights Reserved.
+                </div>
+            </div>
+        </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
